@@ -1,6 +1,3 @@
-import "@/scss/index.scss";
+import './scss/index.scss';
 
-const start = async () => {
-  await console.log("hi");
-};
-start()
+console.log('Working!');
