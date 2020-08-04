@@ -8,6 +8,8 @@
     "rules": {
 
     },
-    "extends": ["eslint:recommended", "google"]
+    "extends": ["eslint:recommended", "google"],
+    "require-jsdoc": 0
+    
 }
 
