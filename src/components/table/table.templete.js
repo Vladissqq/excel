@@ -13,7 +13,7 @@ export function createTable(rowsCount = 15) {
     .map(createCol)
     .join("");
 
-  rows.push(createRow("", cols));
+  rows.push(createRow(null, cols));
 
   for (let i = 0; i < rowsCount; i++) {
     const cells = new Array(colsColumn).fill("").map(createCell).join("");
@@ -24,25 +24,32 @@ export function createTable(rowsCount = 15) {
 }
 
 function createRow(index, content) {
+  const resizer = index
+    ? '<div class="row-resize" data-resize="row" ></div>'
+    : "";
   return `
-    <div class="table__row row">
-        <div class="row__info">${index}</div>
+    <div class="table__row row" data-type="resizeble">
+        <div class="row__info">
+          ${index ? index : ""}
+          ${resizer}
+        </div>
         <div class="row__data">${content}</div>
     </div>
     `;
 }
 
-function createCol(el) {
+function createCol(el, index) {
   return `
-    <div class="row__data-column">
+    <div class="row__data-column" data-type="resizeble" data-col="${index}">
         ${el}
+        <div class="col-resize" data-resize="col"></div>
     </div>
     `;
 }
 
-function createCell() {
+function createCell(_, index) {
   return `
-    <div class="row__data-cell" contenteditable>
+    <div class="row__data-cell" contenteditable data-col="${index}">
     </div>
     `;
 }
