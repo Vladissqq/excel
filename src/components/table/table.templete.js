@@ -16,7 +16,7 @@ export function createTable(rowsCount = 15) {
   rows.push(createRow(null, cols));
 
   for (let i = 0; i < rowsCount; i++) {
-    const cells = new Array(colsColumn).fill("").map(createCell).join("");
+    const cells = new Array(colsColumn).fill("").map(createCell(i)).join("");
     rows.push(createRow(i + 1, cells));
   }
 
@@ -47,11 +47,19 @@ function createCol(el, index) {
     `;
 }
 
-function createCell(_, index) {
-  return `
-    <div class="row__data-cell" contenteditable data-col="${index}">
+function createCell(row) {
+  return function (_, index) {
+    return `
+    <div 
+      class="row__data-cell" 
+      contenteditable 
+      data-col="${index}"
+      data-type="cell"
+      data-id="${row}:${index}"
+    >
     </div>
     `;
+  };
 }
 
 function toChar(_, index) {
