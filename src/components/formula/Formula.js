@@ -1,6 +1,9 @@
 import { ExcelComponent } from "@core/ExcelComponent";
+import { $ } from "@core/dom";
 
 export class Formula extends ExcelComponent {
+  static className = "excel__formula";
+
   constructor($root, options) {
     super($root, {
       name: "Formula",
@@ -8,12 +11,11 @@ export class Formula extends ExcelComponent {
       ...options,
     });
   }
-  static className = "excel__formula";
 
   toHTML() {
     return `
-    <div class="formula__info">fx</div> 
-    <div class="formula__input input" id="formula" contenteditable spellcheck="false"></div>
+      <div class="info">fx</div>
+      <div id="formula" class="input" contenteditable spellcheck="false"></div>
     `;
   }
 
@@ -23,25 +25,26 @@ export class Formula extends ExcelComponent {
     this.$formula = this.$root.find("#formula");
 
     this.$on("table:select", ($cell) => {
-      this.$formula.text($cell[0].text());
+      this.$formula.text($cell.text());
     });
 
     this.$on("table:input", ($cell) => {
-      this.$formula.text($cell[0].text());
+      this.$formula.text($cell.text());
     });
+
+    // this.$subscribe(state => {
+    //   console.log('FormulaState', state)
+    // })
   }
 
   onInput(event) {
-    const text = event.target.textContent.trim();
-    console.log(text);
-    this.$emit("formula:input", text);
+    this.$emit("formula:input", $(event.target).text());
   }
 
   onKeydown(event) {
     const keys = ["Enter", "Tab"];
     if (keys.includes(event.key)) {
       event.preventDefault();
-
       this.$emit("formula:done");
     }
   }
